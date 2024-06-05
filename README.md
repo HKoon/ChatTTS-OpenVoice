@@ -1,3 +1,10 @@
+##ChatTTS x OpenVoice
+
+Enhance the authenticity of speech by utilizing ChatTTS for more natural voice generation, complemented with the voice timber simulation module from Openvoice for seamless tone transplantation.
+
+Have a try on huggingface!
+https://huggingface.co/spaces/Hilley/ChatTTS-OpenVoice
+
 ---
 title: ChatTTS OpenVoice
 emoji: 🐠
