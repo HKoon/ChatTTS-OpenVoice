@@ -1,0 +1,41 @@
+# PyTorch and related libraries
+torch
+torchvision
+torchaudio
+
+# Hugging Face transformers library
+transformers
+
+# Configuration management with OmegaConf
+omegaconf
+
+# Interactive widgets for Jupyter Notebooks
+ipywidgets
+
+# Gradio for creating web UIs
+gradio
+
+# Vector quantization for PyTorch
+vector_quantize_pytorch
+
+# Hugging Face Hub client
+huggingface_hub
+
+vocos
+
+# OpenVoice
+librosa
+faster-whisper
+pydub
+wavmark
+numpy
+eng_to_ipa
+inflect
+unidecode
+whisper-timestamped
+openai
+python-dotenv
+pypinyin
+jieba
+cn2an
+edge_tts
