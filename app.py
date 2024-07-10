@@ -9,7 +9,7 @@ import numpy as np
 
 import ChatTTS
 
-from OpenVoice import se_extractor
+from OpenVoice.utils import se_extractor
 from OpenVoice.api import ToneColorConverter
 import soundfile
 
