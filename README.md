@@ -9,9 +9,8 @@ https://huggingface.co/spaces/Hilley/ChatTTS-OpenVoice
 
 
 
+---
 __Notice:__
-
 We need to download the OpenVoice Checkpoint and save it into the ./OpenVoice/checkpoint folder.
-
 OpenVoice Checkpoint: https://huggingface.co/myshell-ai/OpenVoice/tree/main/checkpoints
 <img width="933" alt="image" src="https://github.com/user-attachments/assets/8ff87528-805e-4ba9-82fb-4571cc456fd6">
