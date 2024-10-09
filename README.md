@@ -9,7 +9,7 @@ https://huggingface.co/spaces/Hilley/ChatTTS-OpenVoice
 
 
 
-###Notice:
+__Notice:__
 
 We need to download the OpenVoice Checkpoint and save it into the ./OpenVoice/checkpoint folder.
 
