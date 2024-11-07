@@ -1,4 +1,4 @@
-import spaces
+# import spaces
 import os
 import random
 import argparse
@@ -25,7 +25,7 @@ def generate_seed():
         "value": new_seed
         }
 
-@spaces.GPU
+# @spaces.GPU
 def chat_tts(text, temperature, top_P, top_K, audio_seed_input, text_seed_input, refine_text_flag, refine_text_input, output_path=None):
 
     torch.manual_seed(audio_seed_input)
