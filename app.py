@@ -116,7 +116,7 @@ with gr.Blocks() as demo:
     refine_text_checkbox = gr.Checkbox(label="Refine text", info="'oral' means add filler words, 'laugh' means add laughter, and 'break' means add a pause. (0-10) ", value=True)
     refine_text_input = gr.Textbox(label="Refine Prompt", lines=1, placeholder="Please Refine Prompt...", value=default_refine_text)
     with gr.Column():    
-        voice_ref = gr.Audio(label="Reference Audio", type="filepath", value="Examples/speaker.mp3")
+        voice_ref = gr.Audio(label="Reference Audio", type="filepath")
 
     with gr.Row():
         temperature_slider = gr.Slider(minimum=0.00001, maximum=1.0, step=0.00001, value=0.3, label="Audio temperature")
