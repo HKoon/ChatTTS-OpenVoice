@@ -1,6 +1,15 @@
 
 from openai import OpenAI
- 
+
+# MiniMax API constants
+MINIMAX_BASE_URL = "https://api.minimax.io/v1"
+MINIMAX_MODELS = [
+    "MiniMax-M2.7",
+    "MiniMax-M2.7-highspeed",
+    "MiniMax-M2.5",
+    "MiniMax-M2.5-highspeed",
+]
+
 prompt_dict = {
     'kimi': [ {"role": "system", "content": "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。"},
               {"role": "user", "content": "你好，请注意你现在生成的文字要按照人日常生活的口吻，你的回复将会后续用TTS模型转为语音，并且请把回答控制在100字以内。并且标点符号仅包含逗号和句号，将数字等转为文字回答。"},
@@ -20,8 +29,24 @@ prompt_dict = {
         {"role": "user", "content": "罗森宣布将于7月24日退市，在华门店超6000家！"},
         {"role": "assistant", "content": "罗森宣布将于七月二十四日退市，在华门店超过六千家。"},
         ],
-}          
-                
+    'minimax': [
+        {"role": "system", "content": "You are a helpful assistant provided by MiniMax."},
+        {"role": "user", "content": "你好，请注意你现在生成的文字要按照人日常生活的口吻，你的回复将会后续用TTS模型转为语音，并且请把回答控制在100字以内。并且标点符号仅包含逗号和句号，将数字等转为文字回答。"},
+        {"role": "assistant", "content": "好的，我现在生成的文字将按照人日常生活的口吻，并且我会把回答控制在一百字以内，标点符号仅包含逗号和句号，将阿拉伯数字等转为中文文字回答。下面请开始对话。"},
+    ],
+    'minimax_TN': [
+        {"role": "system", "content": "You are a helpful assistant provided by MiniMax."},
+        {"role": "user", "content": "你好，现在我们在处理TTS的文本输入，下面将会给你输入一段文本，请你将其中的阿拉伯数字等等转为文字表达，并且输出的文本里仅包含逗号和句号这两个标点符号"},
+        {"role": "assistant", "content": "好的，我现在对TTS的文本输入进行处理。这一般叫做text normalization。下面请输入"},
+        {"role": "user", "content": "We paid $123 for this desk."},
+        {"role": "assistant", "content": "We paid one hundred and twenty three dollars for this desk."},
+        {"role": "user", "content": "详询请拨打010-724654"},
+        {"role": "assistant", "content": "详询请拨打零幺零，七二四六五四"},
+        {"role": "user", "content": "罗森宣布将于7月24日退市，在华门店超6000家！"},
+        {"role": "assistant", "content": "罗森宣布将于七月二十四日退市，在华门店超过六千家。"},
+    ],
+}
+
 class llm_api:
     def __init__(self, api_key, base_url, model):
         self.client =  OpenAI(
@@ -30,7 +55,10 @@ class llm_api:
         )
         self.model = model
     def call(self, user_question, temperature = 0.3, prompt_version='kimi', **kwargs):
-    
+        # MiniMax requires temperature > 0
+        if temperature <= 0:
+            temperature = 0.01
+
         completion = self.client.chat.completions.create(
             model = self.model,
             messages = prompt_dict[prompt_version]+[{"role": "user", "content": user_question},],
@@ -38,3 +66,27 @@ class llm_api:
             **kwargs
         )
         return completion.choices[0].message.content
+
+
+def create_minimax_client(api_key: str, model: str = "MiniMax-M2.7") -> llm_api:
+    """Create an llm_api client pre-configured for MiniMax.
+
+    Args:
+        api_key: MiniMax API key (set MINIMAX_API_KEY env var or pass directly).
+        model: MiniMax model name. Defaults to MiniMax-M2.7 (204K context).
+               Other options: MiniMax-M2.7-highspeed, MiniMax-M2.5, MiniMax-M2.5-highspeed.
+
+    Returns:
+        llm_api instance ready to use with prompt_version='minimax' or 'minimax_TN'.
+
+    Example::
+
+        import os
+        from ChatTTS.experimental.llm import create_minimax_client
+
+        client = create_minimax_client(os.environ["MINIMAX_API_KEY"])
+        reply = client.call("What is the weather today?", prompt_version="minimax")
+    """
+    if model not in MINIMAX_MODELS:
+        raise ValueError(f"Unknown MiniMax model '{model}'. Choose from: {MINIMAX_MODELS}")
+    return llm_api(api_key=api_key, base_url=MINIMAX_BASE_URL, model=model)
