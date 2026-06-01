@@ -16,7 +16,7 @@ __Experimental LLM Integration__
 | DeepSeek | `https://api.deepseek.com/v1` | `deepseek`, `deepseek_TN` |
 | **MiniMax** | `https://api.minimax.io/v1` | `minimax`, `minimax_TN` |
 
-**MiniMax quick start** (models: `MiniMax-M2.7`, `MiniMax-M2.7-highspeed`, `MiniMax-M2.5`, `MiniMax-M2.5-highspeed`; all with 204K context):
+**MiniMax quick start** (models: `MiniMax-M3`, `MiniMax-M2.7`, `MiniMax-M2.7-highspeed`; all with 204K context):
 
 ```python
 import os

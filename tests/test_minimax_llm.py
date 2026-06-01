@@ -94,11 +94,17 @@ class TestMinimaxConstants(unittest.TestCase):
         self.assertEqual(MINIMAX_BASE_URL, "https://api.minimax.io/v1")
 
     def test_models_list(self):
+        self.assertIn("MiniMax-M3", MINIMAX_MODELS)
         self.assertIn("MiniMax-M2.7", MINIMAX_MODELS)
         self.assertIn("MiniMax-M2.7-highspeed", MINIMAX_MODELS)
-        self.assertIn("MiniMax-M2.5", MINIMAX_MODELS)
-        self.assertIn("MiniMax-M2.5-highspeed", MINIMAX_MODELS)
-        self.assertEqual(len(MINIMAX_MODELS), 4)
+        self.assertEqual(len(MINIMAX_MODELS), 3)
+
+    def test_m3_is_first(self):
+        self.assertEqual(MINIMAX_MODELS[0], "MiniMax-M3")
+
+    def test_legacy_models_removed(self):
+        for legacy in ("MiniMax-M2.5", "MiniMax-M2.5-highspeed", "MiniMax-M2.1", "MiniMax-M2", "MiniMax-M1"):
+            self.assertNotIn(legacy, MINIMAX_MODELS)
 
 
 class TestPromptDict(unittest.TestCase):
@@ -129,7 +135,7 @@ class TestLlmApiTemperatureClamping(unittest.TestCase):
         return llm_api(
             api_key="test_key",
             base_url=MINIMAX_BASE_URL,
-            model="MiniMax-M2.7",
+            model="MiniMax-M3",
         )
 
     def test_zero_temperature_clamped(self):
@@ -169,11 +175,11 @@ class TestCreateMinimaxClient(unittest.TestCase):
 
     def test_default_model(self):
         client = create_minimax_client("test_key")
-        self.assertEqual(client.model, "MiniMax-M2.7")
+        self.assertEqual(client.model, "MiniMax-M3")
 
     def test_custom_model(self):
-        client = create_minimax_client("test_key", model="MiniMax-M2.5-highspeed")
-        self.assertEqual(client.model, "MiniMax-M2.5-highspeed")
+        client = create_minimax_client("test_key", model="MiniMax-M2.7-highspeed")
+        self.assertEqual(client.model, "MiniMax-M2.7-highspeed")
 
     def test_invalid_model_raises(self):
         with self.assertRaises(ValueError):
@@ -203,7 +209,7 @@ class TestIntegrationMinimax(unittest.TestCase):
         result = client.call("Tell me a joke.", prompt_version="minimax")
 
         self.assertEqual(result, "integrated response")
-        self.assertEqual(captured["model"], "MiniMax-M2.7")
+        self.assertEqual(captured["model"], "MiniMax-M3")
         messages = captured["messages"]
         self.assertEqual(messages[-1]["content"], "Tell me a joke.")
         self.assertEqual(messages[0]["role"], "system")
