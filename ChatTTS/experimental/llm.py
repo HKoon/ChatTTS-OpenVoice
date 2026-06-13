@@ -4,10 +4,9 @@ from openai import OpenAI
 # MiniMax API constants
 MINIMAX_BASE_URL = "https://api.minimax.io/v1"
 MINIMAX_MODELS = [
+    "MiniMax-M3",
     "MiniMax-M2.7",
     "MiniMax-M2.7-highspeed",
-    "MiniMax-M2.5",
-    "MiniMax-M2.5-highspeed",
 ]
 
 prompt_dict = {
@@ -68,13 +67,13 @@ class llm_api:
         return completion.choices[0].message.content
 
 
-def create_minimax_client(api_key: str, model: str = "MiniMax-M2.7") -> llm_api:
+def create_minimax_client(api_key: str, model: str = "MiniMax-M3") -> llm_api:
     """Create an llm_api client pre-configured for MiniMax.
 
     Args:
         api_key: MiniMax API key (set MINIMAX_API_KEY env var or pass directly).
-        model: MiniMax model name. Defaults to MiniMax-M2.7 (204K context).
-               Other options: MiniMax-M2.7-highspeed, MiniMax-M2.5, MiniMax-M2.5-highspeed.
+        model: MiniMax model name. Defaults to MiniMax-M3 (latest flagship, 204K context).
+               Other options: MiniMax-M2.7, MiniMax-M2.7-highspeed.
 
     Returns:
         llm_api instance ready to use with prompt_version='minimax' or 'minimax_TN'.
